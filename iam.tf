@@ -8,8 +8,7 @@ module "vault_role" {
 
   oidc_providers = {
     main = {
-#      provider_arn               = data.terraform_remote_state.eks.outputs.oidc_provider_arn
-      provider_arn               = "arn:aws:iam::044964284165:oidc-provider/oidc.eks.us-east-2.amazonaws.com/id/1C488563D17798C8CD684DA62B056066"
+      provider_arn               = data.terraform_remote_state.eks.outputs.oidc_provider_arn
       namespace_service_accounts = ["${var.tooling_namespace}:${var.app_name}-sa"]
     }
   }

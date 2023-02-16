@@ -19,13 +19,13 @@ data "aws_eks_cluster_auth" "eks_cluster_auth" {
   name = "${var.stack}-eks"
 }
 
-#data "terraform_remote_state" "eks" {
-#  backend = "remote"
-#
-#  config = {
-#    organization = var.tfe_organization
-#    workspaces = {
-#      name = var.tfe_eks_workspace_name
-#    }
-#  }
-#}
+data "terraform_remote_state" "eks" {
+  backend = "remote"
+
+  config = {
+    organization = var.tfe_organization
+    workspaces = {
+      name = var.tfe_eks_workspace_name
+    }
+  }
+}

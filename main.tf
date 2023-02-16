@@ -8,7 +8,7 @@ resource "aws_kms_key" "vault_unseal_key" {
   description = "Vault unseal key"
 }
 module "vault" {
-  source              = "../../helm/terraform-helm-vault"
+  source = "app.terraform.io/logistic/vault/helm"
   app_name            = var.app_name
   namespace           = var.tooling_namespace
   ingress_host        = local.vault_host
