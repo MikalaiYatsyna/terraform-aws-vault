@@ -1,7 +1,7 @@
 module "vault_role" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
-  role_name                              = "${var.stack}-${var.app_name}-role"
+  role_name = "${var.stack}-${var.app_name}-role"
   role_policy_arns = {
     VaultKmsPolicy = aws_iam_policy.vault_kms_policy.arn
   }
