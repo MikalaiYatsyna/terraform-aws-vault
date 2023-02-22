@@ -17,7 +17,7 @@ No requirements.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_records"></a> [records](#module\_records) | terraform-aws-modules/route53/aws//modules/records | n/a |
-| <a name="module_vault"></a> [vault](#module\_vault) | app.terraform.io/logistic/vault/helm | 0.0.2-snapshot |
+| <a name="module_vault"></a> [vault](#module\_vault) | app.terraform.io/logistic/vault/helm | 0.0.2 |
 | <a name="module_vault_role"></a> [vault\_role](#module\_vault\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | n/a |
 
 ## Resources
