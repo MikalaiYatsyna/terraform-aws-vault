@@ -1,7 +1,5 @@
-variable "region" {}
-
 variable "app_name" {
-  description = "Consul app name"
+  description = "Vault app name"
 }
 
 variable "stack" {
@@ -26,14 +24,11 @@ variable "create_ingress" {
 }
 
 variable "consul_app_name" {
+  type        = string
   description = "Consul app name used to lookup ui service"
 }
 
-variable "tfe_organization" {
-  description = "Name of Terraform Cloud organization"
-
-}
-
-variable "tfe_eks_workspace_name" {
-  description = "Name of Terraform Cloud eks workspace"
+variable "oidc_provider_arn" {
+  type        = string
+  description = "OIDC provider arn"
 }
