@@ -1,6 +1,5 @@
 locals {
-  vault_subdomain = "${var.app_name}.${var.stack}"
-  vault_host      = "${local.vault_subdomain}.${var.domain}"
+  vault_host = "${var.app_name}.${var.domain}"
 }
 
 resource "aws_kms_key" "vault_unseal_key" {
@@ -37,7 +36,7 @@ module "records" {
   zone_name = data.aws_route53_zone.zone[0].name
   records = [
     {
-      name    = local.vault_subdomain
+      name    = var.app_name
       type    = "CNAME"
       records = [data.aws_lb.ingress_lb[0].dns_name]
       ttl     = 30
