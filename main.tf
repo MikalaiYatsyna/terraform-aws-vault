@@ -1,5 +1,5 @@
 locals {
-  vault_host      = "${var.app_name}.${var.domain}"
+  vault_host = "${var.app_name}.${var.domain}"
 }
 
 resource "aws_kms_key" "vault_unseal_key" {
