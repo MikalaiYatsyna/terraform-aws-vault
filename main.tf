@@ -1,45 +1,101 @@
 locals {
-  vault_host = "${var.app_name}.${var.domain}"
+  app_name      = "vault1"
+  ingress_host  = "${local.app_name}.core.${var.domain}"
+  chart_repo    = "https://helm.releases.hashicorp.com"
+  chart_name    = "vault"
+  ssl_cert_name = "${var.stack}-vault-cert"
 }
 
-resource "aws_kms_key" "vault_unseal_key" {
-  description = "Vault unseal key"
-}
+resource "helm_release" "vault" {
+  depends_on = [time_sleep.cert_provision]
+  repository        = local.chart_repo
+  chart             = local.chart_name
+  name              = local.app_name
+  namespace         = var.namespace
+  dependency_update = true
+  atomic            = true
 
-module "vault" {
-  source       = "app.terraform.io/logistic/vault/helm"
-  version      = "0.0.2"
-  app_name     = var.app_name
-  namespace    = var.tooling_namespace
-  ingress_host = local.vault_host
-  ingress_annotations = {
-    "kubernetes.io/ingress.class" = "nginx"
-  }
-  ingress_enabled = var.create_ingress
-  consul_app_name = var.consul_app_name
-  sa_annotations = {
-    "eks.amazonaws.com/role-arn"               = module.vault_role.iam_role_arn
-    "eks.amazonaws.com/sts-regional-endpoints" = "true"
-  }
-  seal = <<EOF
-          seal "awskms" {
-            region     = "${data.aws_region.current.name}"
-            kms_key_id = "${aws_kms_key.vault_unseal_key.id}"
+  values = [
+    yamlencode({
+      fullnameOverride = local.app_name
+      global           = {
+        tlsDisable = false
+      }
+      ui = {
+        enabled = true
+      }
+      server = {
+        extraEnvironmentVars = {
+          #       Add domain name so init container can fire a request
+          VAULT_TLSCERT = "/vault/userconfig/${local.ssl_cert_name}/tls.crt"
+          VAULT_TLSKEY  = "/vault/userconfig/${local.ssl_cert_name}/tls.key"
+        }
+        standalone = {
+          enabled = false
+        }
+        ingress = {
+          enabled = true
+          hosts   = [
+            {
+              host  = local.ingress_host
+              paths = [
+                "/"
+              ]
+            }
+          ]
+          tls = [
+            {
+              secretName = local.ssl_cert_name
+              hosts      = [
+                local.ingress_host
+              ]
+            }
+          ]
+          annotations = jsonencode({
+            "kubernetes.io/ingress.class"                    = "nginx"
+            "kubernetes.io/ingress.allow-http"               = "false"
+            "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
+            "nginx.ingress.kubernetes.io/ssl-passthrough"    = "true"
+            "nginx.ingress.kubernetes.io/backend-protocol"   = "HTTPS"
+          })
+        }
+        serviceAccount = {
+          create = false
+          name   = kubernetes_service_account.vault-sa.metadata[0].name
+        }
+        extraVolumes = [
+          {
+            type = "secret"
+            name = local.ssl_cert_name
           }
-        EOF
-}
+        ]
+        ha = {
+          enabled  = true
+          replicas = var.server_replicas
+          config   = <<-EOF
+            ui = true
+            listener "tcp" {
+              tls_disable = 0
+              address = "[::]:8200"
+              cluster_address = "[::]:8201"
+              tls_cert_file = "/vault/userconfig/${local.ssl_cert_name}/tls.crt"
+              tls_key_file  = "/vault/userconfig/${local.ssl_cert_name}/tls.key"
+            }
 
-module "records" {
-  count  = var.create_ingress ? 1 : 0
-  source = "terraform-aws-modules/route53/aws//modules/records"
+            storage "dynamodb" {
+              ha_enabled = "true"
+              region     = "${data.aws_region.current.name}"
+              table      = "${aws_dynamodb_table.vault-backend.name}"
+            }
 
-  zone_name = data.aws_route53_zone.zone[0].name
-  records = [
-    {
-      name    = var.app_name
-      type    = "CNAME"
-      records = [data.aws_lb.ingress_lb[0].dns_name]
-      ttl     = 30
-    }
+            seal "awskms" {
+              kms_key_id = "${aws_kms_key.vault_unseal_key.id}"
+            }
+            service_registration "kubernetes" {}
+          EOF
+        }
+      }
+    })
   ]
 }
+
