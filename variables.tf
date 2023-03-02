@@ -1,7 +1,3 @@
-variable "app_name" {
-  description = "Vault app name"
-}
-
 variable "stack" {
   type        = string
   description = "Stack name"
@@ -12,9 +8,9 @@ variable "cluster_name" {
   description = "Name of EKS cluster"
 }
 
-variable "tooling_namespace" {
+variable "namespace" {
   type        = string
-  description = "Namespace for Consul release"
+  description = "Namespace for Vault release"
 }
 
 variable "domain" {
@@ -22,23 +18,23 @@ variable "domain" {
   description = "Root application domain name"
 }
 
-variable "create_ingress" {
-  type        = bool
-  description = "Flag to create ingress"
-  default     = true
-}
-
-variable "lb_arn" {
-  type    = string
-  default = "ARN of NLB for ingress"
-}
-
-variable "consul_app_name" {
+variable "lb_url" {
   type        = string
-  description = "Consul app name used to lookup ui service"
+  description = "URL of NLB for Ingress"
 }
 
 variable "oidc_provider_arn" {
   type        = string
   description = "OIDC provider arn"
+}
+
+variable "server_replicas" {
+  type        = number
+  default     = 1
+  description = "Number of replicas to create"
+}
+
+variable "vault_init_image" {
+  type        = string
+  description = "Image to be used in init job"
 }
