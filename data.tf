@@ -1,16 +1,10 @@
-locals {
-  cluster_name = "${var.stack}-eks"
-}
-
 data "aws_region" "current" {
   provider = aws
 }
 
 data "aws_lb" "ingress_lb" {
   count = var.create_ingress ? 1 : 0
-  tags = {
-    Name = "${var.stack}-lb"
-  }
+  arn = var.lb_arn
 }
 
 data "aws_route53_zone" "zone" {
@@ -19,9 +13,9 @@ data "aws_route53_zone" "zone" {
 }
 
 data "aws_eks_cluster" "eks_cluster" {
-  name = local.cluster_name
+  name = var.cluster_name
 }
 
 data "aws_eks_cluster_auth" "eks_cluster_auth" {
-  name = local.cluster_name
+  name = var.cluster_name
 }

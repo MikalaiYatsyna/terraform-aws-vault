@@ -7,6 +7,11 @@ variable "stack" {
   description = "Stack name"
 }
 
+variable "cluster_name" {
+  type = string
+  description = "Name of EKS cluster"
+}
+
 variable "tooling_namespace" {
   type        = string
   description = "Namespace for Consul release"
@@ -21,6 +26,11 @@ variable "create_ingress" {
   type        = bool
   description = "Flag to create ingress"
   default     = true
+}
+
+variable "lb_arn" {
+  type = string
+  default = "ARN of NLB for ingress"
 }
 
 variable "consul_app_name" {
