@@ -18,11 +18,6 @@ variable "domain" {
   description = "Root application domain name"
 }
 
-variable "lb_url" {
-  type        = string
-  description = "URL of NLB for Ingress"
-}
-
 variable "oidc_provider_arn" {
   type        = string
   description = "OIDC provider arn"
@@ -40,6 +35,6 @@ variable "vault_init_image" {
 }
 
 variable "certificate_issuer" {
-  type        = string
-  description = "Cert manager issuer name"
+  type = string
+  description = "Cert manager issuer name for Ingress certificate"
 }
