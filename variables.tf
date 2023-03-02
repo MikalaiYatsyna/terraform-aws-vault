@@ -8,7 +8,7 @@ variable "stack" {
 }
 
 variable "cluster_name" {
-  type = string
+  type        = string
   description = "Name of EKS cluster"
 }
 
@@ -29,7 +29,7 @@ variable "create_ingress" {
 }
 
 variable "lb_arn" {
-  type = string
+  type    = string
   default = "ARN of NLB for ingress"
 }
 
