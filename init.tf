@@ -20,7 +20,7 @@ resource "kubernetes_job" "vault_init_job" {
       }
       spec {
         service_account_name = kubernetes_service_account.vault-sa.metadata[0].name
-        restart_policy       = "Never"
+        restart_policy       = "OnFailure"
         container {
           image_pull_policy = "Always"
           name              = "init"

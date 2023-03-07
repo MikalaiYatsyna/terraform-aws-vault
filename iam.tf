@@ -46,7 +46,13 @@ resource "aws_iam_policy" "vault_kms_policy" {
           "dynamodb:Scan",
           "dynamodb:DescribeTable",
           # Secret Manager for populating root token
-          "secretsmanager:PutSecretValue"
+          "secretsmanager:PutSecretValue",
+          # Kms for auto unseal
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey",
         ]
         Effect   = "Allow"
         Resource = "*"
