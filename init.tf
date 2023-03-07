@@ -13,7 +13,7 @@ resource "kubernetes_job" "vault_init_job" {
     namespace = var.namespace
   }
   spec {
-    backoff_limit = 1
+    backoff_limit = 20
     template {
       metadata {
         name = "vault-init-job"
