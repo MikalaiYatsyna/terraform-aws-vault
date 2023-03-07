@@ -15,7 +15,7 @@ module "vault_role" {
 }
 
 resource "aws_iam_policy" "vault_kms_policy" {
-  name        = "${local.app_name}-policy"
+  name        = "${var.stack}-${local.app_name}-policy"
   description = "Vault policy"
 
   policy = jsonencode({
