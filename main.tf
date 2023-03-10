@@ -1,13 +1,12 @@
 locals {
-  app_name      = "vault1"
+  app_name      = "vault"
   ingress_host  = "${local.app_name}.core.${var.domain}"
   chart_repo    = "https://helm.releases.hashicorp.com"
   chart_name    = "vault"
-  ssl_cert_name = "${var.stack}-vault-cert"
+  ssl_cert_secret = "${var.stack}-vault-cert"
 }
 
 resource "helm_release" "vault" {
-  depends_on = [time_sleep.cert_provision]
   repository        = local.chart_repo
   chart             = local.chart_name
   name              = local.app_name
@@ -26,9 +25,8 @@ resource "helm_release" "vault" {
       }
       server = {
         extraEnvironmentVars = {
-          #       Add domain name so init container can fire a request
-          VAULT_TLSCERT = "/vault/userconfig/${local.ssl_cert_name}/tls.crt"
-          VAULT_TLSKEY  = "/vault/userconfig/${local.ssl_cert_name}/tls.key"
+          VAULT_TLSCERT = "/vault/userconfig/${local.ssl_cert_secret}/tls.crt"
+          VAULT_TLSKEY  = "/vault/userconfig/${local.ssl_cert_secret}/tls.key"
         }
         standalone = {
           enabled = false
@@ -45,7 +43,7 @@ resource "helm_release" "vault" {
           ]
           tls = [
             {
-              secretName = local.ssl_cert_name
+              secretName = local.ssl_cert_secret
               hosts      = [
                 local.ingress_host
               ]
@@ -66,7 +64,7 @@ resource "helm_release" "vault" {
         extraVolumes = [
           {
             type = "secret"
-            name = local.ssl_cert_name
+            name = local.ssl_cert_secret
           }
         ]
         ha = {
@@ -78,8 +76,8 @@ resource "helm_release" "vault" {
               tls_disable = 0
               address = "[::]:8200"
               cluster_address = "[::]:8201"
-              tls_cert_file = "/vault/userconfig/${local.ssl_cert_name}/tls.crt"
-              tls_key_file  = "/vault/userconfig/${local.ssl_cert_name}/tls.key"
+              tls_cert_file = "/vault/userconfig/${local.ssl_cert_secret}/tls.crt"
+              tls_key_file  = "/vault/userconfig/${local.ssl_cert_secret}/tls.key"
             }
 
             storage "dynamodb" {

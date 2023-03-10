@@ -3,9 +3,13 @@ resource "aws_secretsmanager_secret" "vault_root_token" {
   recovery_window_in_days = 0
 }
 
+# Allow 1 min for Vault pod to be created before running init
+resource "time_sleep" "vault_deploy" {
+  create_duration = "60s"
+}
 
 resource "kubernetes_job" "vault_init_job" {
-  depends_on          = [aws_secretsmanager_secret.vault_root_token, helm_release.vault]
+  depends_on          = [aws_secretsmanager_secret.vault_root_token, helm_release.vault, time_sleep.vault_deploy]
   wait_for_completion = true
   metadata {
     name      = "vault-init-job"
@@ -37,13 +41,6 @@ resource "kubernetes_job" "vault_init_job" {
             value = ""
           }
         }
-#        volume {
-#          name = local.sll_cert_name
-#          secret = {
-#            defaultMode: 420
-#            secretName: local.ssl_cert_name
-#          }
-#        }
       }
     }
   }
