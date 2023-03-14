@@ -2,7 +2,7 @@ module "records" {
   source = "terraform-aws-modules/route53/aws//modules/records"
 
   zone_name = data.aws_route53_zone.zone.name
-  records   = [
+  records = [
     {
       name    = local.cname
       type    = "CNAME"

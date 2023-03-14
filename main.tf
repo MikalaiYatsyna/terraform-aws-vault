@@ -25,7 +25,7 @@ resource "helm_release" "vault" {
   values = [
     yamlencode({
       fullnameOverride = local.app_name
-      global           = {
+      global = {
         tlsDisable = false
       }
       server = {
@@ -35,9 +35,9 @@ resource "helm_release" "vault" {
         }
         ingress = {
           enabled = true
-          hosts   = [
+          hosts = [
             {
-              host  = local.ingress_host
+              host = local.ingress_host
               paths = [
                 "/"
               ]
@@ -46,7 +46,7 @@ resource "helm_release" "vault" {
           tls = [
             {
               secretName = local.ssl_cert_secret
-              hosts      = [
+              hosts = [
                 local.ingress_host
               ]
             }

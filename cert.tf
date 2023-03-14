@@ -1,15 +1,15 @@
 resource "kubernetes_manifest" "certificate" {
   depends_on = [data.aws_route53_zone.zone]
-  manifest   = {
+  manifest = {
     "apiVersion" = "cert-manager.io/v1"
     "kind"       = "Certificate"
-    "metadata"   = {
+    "metadata" = {
       "name"      = local.ssl_cert_secret
       "namespace" = var.namespace
     }
     "spec" = {
       "secretName" = local.ssl_cert_secret
-      privateKey   = {
+      privateKey = {
         "algorithm" = "RSA"
         "encoding"  = "PKCS1"
         "size"      = "2048"
