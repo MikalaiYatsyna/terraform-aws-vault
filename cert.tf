@@ -1,6 +1,6 @@
 resource "kubernetes_manifest" "certificate" {
-  depends_on = [module.records]
-  manifest = {
+  depends_on = [data.aws_route53_zone.zone]
+  manifest   = {
     "apiVersion" = "cert-manager.io/v1"
     "kind"       = "Certificate"
     "metadata"   = {
@@ -9,11 +9,18 @@ resource "kubernetes_manifest" "certificate" {
     }
     "spec" = {
       "secretName" = local.ssl_cert_secret
-      "dnsNames"   = [local.ingress_host]
-      "issuerRef"  = {
-        "name"  = var.certificate_issuer
-        "kind"  = "ClusterIssuer"
-        "group" = "cert-manager.io"
+      privateKey   = {
+        "algorithm" = "RSA"
+        "encoding"  = "PKCS1"
+        "size"      = "2048"
+      }
+      "dnsNames" = [
+        local.ingress_host,
+        "www.${local.ingress_host}"
+      ]
+      "issuerRef" = {
+        "name" = var.certificate_issuer
+        "kind" = "ClusterIssuer"
       }
       "usages" : ["server auth", "client auth"]
     }

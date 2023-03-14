@@ -3,13 +3,17 @@ resource "aws_secretsmanager_secret" "vault_root_token" {
   recovery_window_in_days = 0
 }
 
-# Allow 1 min for Vault pod to be created before running init
-resource "time_sleep" "vault_deploy" {
-  create_duration = "60s"
+# Allow 2 mins for helm to create pod
+resource "time_sleep" "vault_release" {
+  depends_on      = [helm_release.vault]
+  create_duration = "120s"
 }
 
 resource "kubernetes_job" "vault_init_job" {
-  depends_on          = [aws_secretsmanager_secret.vault_root_token, helm_release.vault, time_sleep.vault_deploy]
+  depends_on = [time_sleep.vault_release]
+  timeouts {
+    create = "300s"
+  }
   wait_for_completion = true
   metadata {
     name      = "vault-init-job"
@@ -30,15 +34,11 @@ resource "kubernetes_job" "vault_init_job" {
           image             = var.vault_init_image
           env {
             name  = "VAULT_ADDR"
-            value = "https://vault:8200"
+            value = "https://${local.app_name}:8200"
           }
           env {
             name  = "SECRET_NAME"
             value = aws_secretsmanager_secret.vault_root_token.name
-          }
-          env {
-            name = "CERTS"
-            value = ""
           }
         }
       }
