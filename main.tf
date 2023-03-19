@@ -45,7 +45,7 @@ resource "helm_release" "vault" {
             }
           ]
           annotations = jsonencode({
-    "kubernetes.io/ingress.class" = "nginx"
+            "kubernetes.io/ingress.class"                                       = "nginx"
             "kubernetes.io/ingress.allow-http"                                  = "false"
             "nginx.ingress.kubernetes.io/backend-protocol"                      = "HTTPS"
             "nginx.ingress.kubernetes.io/force-ssl-redirect"                    = "true"
@@ -59,12 +59,12 @@ resource "helm_release" "vault" {
         serviceAccount = {
           create = false
           name   = kubernetes_service_account.vault-sa.metadata[0].name
-  }
+        }
         extraVolumes = [
           {
             type = "secret"
             name = kubernetes_secret.vault_server_cert.metadata[0].name
-  }
+          }
         ]
         ha = {
           enabled  = true
@@ -88,4 +88,9 @@ resource "helm_release" "vault" {
 
             service_registration "kubernetes" {}
         EOF
+        }
+      }
+    }
+    )
+  ]
 }
