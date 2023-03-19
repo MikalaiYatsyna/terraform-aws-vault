@@ -82,9 +82,13 @@ resource "helm_release" "vault" {
 
             storage "dynamodb" {
               ha_enabled = true
-            region     = "${data.aws_region.current.name}"
-            kms_key_id = "${aws_kms_key.vault_unseal_key.id}"
-          }
+              region     = "${data.aws_region.current.name}"
+              table      = "${aws_dynamodb_table.vault-backend.name}"
+            }
+
+            seal "awskms" {
+              kms_key_id = "${aws_kms_key.vault_unseal_key.id}"
+            }
 
             service_registration "kubernetes" {}
         EOF
