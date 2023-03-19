@@ -2,10 +2,6 @@ data "aws_region" "current" {
   provider = aws
 }
 
-data "aws_route53_zone" "zone" {
-  name = var.domain
-}
-
 data "aws_eks_cluster" "eks_cluster" {
   name = var.cluster_name
 }

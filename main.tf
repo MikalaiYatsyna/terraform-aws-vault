@@ -1,20 +1,12 @@
 locals {
-  app_name        = "vault"
-  cname           = "${local.app_name}.${var.namespace}"
-  ingress_host    = "${local.cname}.${var.domain}"
-  chart_repo      = "https://helm.releases.hashicorp.com"
-  chart_name      = "vault"
-  ssl_cert_secret = "${local.app_name}-crt"
-}
-
-# Allow 60s for cert-manager to provision cert
-resource "time_sleep" "cert_provision" {
-  depends_on      = [kubernetes_manifest.certificate]
-  create_duration = "60s"
+  app_name     = "vault"
+  cname        = "${local.app_name}.${var.namespace}"
+  ingress_host = "${local.cname}.${var.domain}"
+  chart_repo   = "https://helm.releases.hashicorp.com"
+  chart_name   = "vault"
 }
 
 resource "helm_release" "vault" {
-  depends_on        = [time_sleep.cert_provision]
   repository        = local.chart_repo
   chart             = local.chart_name
   name              = local.app_name
@@ -30,8 +22,9 @@ resource "helm_release" "vault" {
       }
       server = {
         extraEnvironmentVars = {
-          VAULT_TLSCERT = "/vault/userconfig/${local.ssl_cert_secret}/tls.crt"
-          VAULT_TLSKEY  = "/vault/userconfig/${local.ssl_cert_secret}/tls.key"
+          VAULT_TLSCERT = "/vault/userconfig/${kubernetes_secret.vault_server_cert.metadata[0].name}/tls.crt"
+          VAULT_TLSKEY  = "/vault/userconfig/${kubernetes_secret.vault_server_cert.metadata[0].name}/tls.key"
+          VAULT_CACERT  = "/vault/userconfig/${kubernetes_secret.vault_server_cert.metadata[0].name}/ca.crt"
         }
         ingress = {
           enabled = true
@@ -45,7 +38,7 @@ resource "helm_release" "vault" {
           ]
           tls = [
             {
-              secretName = local.ssl_cert_secret
+              secretName = "vault-ingress-cert"
               hosts = [
                 local.ingress_host
               ]
@@ -57,8 +50,10 @@ resource "helm_release" "vault" {
             "nginx.ingress.kubernetes.io/backend-protocol"                      = "HTTPS"
             "nginx.ingress.kubernetes.io/force-ssl-redirect"                    = "true"
             "nginx.ingress.kubernetes.io/auth-tls-verify-client"                = "off"
-            "nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream" = "true"
-            "nginx.ingress.kubernetes.io/auth-tls-secret"                       = "${var.namespace}/${local.ssl_cert_secret}"
+            "nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream" = "false"
+            "nginx.ingress.kubernetes.io/auth-tls-secret"                       = "${var.namespace}/${kubernetes_secret.vault_server_cert.metadata[0].name}"
+            "cert-manager.io/cluster-issuer"                                    = var.certificate_issuer
+            "external-dns.alpha.kubernetes.io/hostname"                         = local.ingress_host
           })
         }
         serviceAccount = {
@@ -68,7 +63,7 @@ resource "helm_release" "vault" {
         extraVolumes = [
           {
             type = "secret"
-            name = local.ssl_cert_secret
+            name = kubernetes_secret.vault_server_cert.metadata[0].name
           }
         ]
         ha = {
@@ -77,15 +72,16 @@ resource "helm_release" "vault" {
           config   = <<-EOF
             ui = true
             listener "tcp" {
-              tls_disable = false
-              address = "[::]:8200"
-              cluster_address = "[::]:8201"
-              tls_cert_file = "/vault/userconfig/${local.ssl_cert_secret}/tls.crt"
-              tls_key_file  = "/vault/userconfig/${local.ssl_cert_secret}/tls.key"
+              tls_disable        = false
+              address            = "[::]:8200"
+              cluster_address    = "[::]:8201"
+              tls_cert_file      = "/vault/userconfig/${kubernetes_secret.vault_server_cert.metadata[0].name}/tls.crt"
+              tls_key_file       = "/vault/userconfig/${kubernetes_secret.vault_server_cert.metadata[0].name}/tls.key"
+              tls_client_ca_file = "/vault/userconfig/${kubernetes_secret.vault_server_cert.metadata[0].name}/ca.crt"
             }
 
             storage "dynamodb" {
-              ha_enabled = "true"
+              ha_enabled = true
               region     = "${data.aws_region.current.name}"
               table      = "${aws_dynamodb_table.vault-backend.name}"
             }
@@ -93,10 +89,12 @@ resource "helm_release" "vault" {
             seal "awskms" {
               kms_key_id = "${aws_kms_key.vault_unseal_key.id}"
             }
+
             service_registration "kubernetes" {}
-          EOF
+        EOF
         }
       }
-    })
+      }
+    )
   ]
 }
