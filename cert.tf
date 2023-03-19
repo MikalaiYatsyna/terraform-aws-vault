@@ -36,8 +36,8 @@ resource "kubernetes_certificate_signing_request_v1" "vault_server_cert_req" {
 
 resource "kubernetes_secret" "vault_server_cert" {
   metadata {
-    name = "${local.app_name}-server-cert"
-    namespace =  var.namespace
+    name      = "${local.app_name}-server-cert"
+    namespace = var.namespace
   }
   data = {
     "ca.crt"  = base64decode(data.aws_eks_cluster.eks_cluster.certificate_authority[0].data)

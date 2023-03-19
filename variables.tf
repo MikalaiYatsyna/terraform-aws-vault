@@ -35,6 +35,6 @@ variable "vault_init_image" {
 }
 
 variable "certificate_issuer" {
-  type = string
+  type        = string
   description = "Cert manager issuer name for Ingress certificate"
 }
