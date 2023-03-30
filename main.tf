@@ -1,7 +1,6 @@
 locals {
   app_name     = "vault"
-  cname        = "${local.app_name}.${var.namespace}"
-  ingress_host = "${local.cname}.${var.domain}"
+  ingress_host = "${local.app_name}.${var.domain}"
   chart_repo   = "https://helm.releases.hashicorp.com"
   chart_name   = "vault"
 }
