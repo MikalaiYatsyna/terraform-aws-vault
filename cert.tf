@@ -6,15 +6,14 @@ resource "tls_private_key" "pkey" {
 resource "tls_cert_request" "cert_request" {
   private_key_pem = tls_private_key.pkey.private_key_pem
   subject {
-    common_name  = "system:node:${local.cname}.svc"
+    common_name  = "system:node:${local.app_name}.svc"
     organization = "Logistics Online test company"
   }
   dns_names = [
     local.app_name,
-    local.cname,
-    "${local.cname}.svc",
-    "${local.cname}.svc.cluster",
-    "${local.cname}.svc.cluster.local",
+    "${local.app_name}.svc",
+    "${local.app_name}.svc.cluster",
+    "${local.app_name}.svc.cluster.local",
   ]
   ip_addresses = [
     "127.0.0.1"
