@@ -11,9 +11,10 @@ resource "tls_cert_request" "cert_request" {
   }
   dns_names = [
     local.app_name,
-    "${local.app_name}.svc",
-    "${local.app_name}.svc.cluster",
-    "${local.app_name}.svc.cluster.local",
+    "${local.app_name}.${var.namespace}",
+    "${local.app_name}.${var.namespace}.svc",
+    "${local.app_name}.${var.namespace}.svc.cluster",
+    "${local.app_name}.${var.namespace}.svc.cluster.local",
   ]
   ip_addresses = [
     "127.0.0.1"
