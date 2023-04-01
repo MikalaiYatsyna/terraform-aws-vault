@@ -25,7 +25,7 @@ variable "oidc_provider_arn" {
 
 variable "server_replicas" {
   type        = number
-  default     = 1
+  default     = 2
   description = "Number of replicas to create"
 }
 
