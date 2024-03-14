@@ -9,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@main
+        uses: hashicorp/setup-terraform@v1
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
@@ -27,7 +27,7 @@ jobs:
         run: terraform fmt
 
       - name: Render terraform docs and push changes back to PR
-        uses: terraform-docs/gh-actions@main
+        uses: terraform-docs/gh-actions@v1.0.0
         with:
           working-dir: .
           output-file: README.md
