@@ -8,7 +8,7 @@ Terraform module to create Vault cluster on AWS EKS
 |------|---------|
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.57 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.9.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >=2.18.1 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.18.1 |
 
 ## Providers
 
@@ -16,7 +16,7 @@ Terraform module to create Vault cluster on AWS EKS
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 5.40.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.12.1 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.18.1 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.27.0 |
 | <a name="provider_time"></a> [time](#provider\_time) | 0.9.1 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.4 |
 
