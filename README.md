@@ -6,9 +6,12 @@ Terraform module to create Vault cluster on AWS EKS
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.57 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.9.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.18.1 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | 1.7.5 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 5.40.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | 2.12.1 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | 2.27.0 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | 0.9.1 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.0.4 |
 
 ## Providers
 
@@ -30,23 +33,23 @@ Terraform module to create Vault cluster on AWS EKS
 
 | Name | Type |
 |------|------|
-| [aws_dynamodb_table.vault-backend](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table) | resource |
-| [aws_iam_policy.vault_kms_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_kms_key.vault_unseal_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
-| [aws_secretsmanager_secret.vault_root_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
-| [helm_release.vault](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [kubernetes_certificate_signing_request_v1.vault_server_cert_req](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/certificate_signing_request_v1) | resource |
-| [kubernetes_job.vault_init_job](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/job) | resource |
-| [kubernetes_secret.sa-token](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
-| [kubernetes_secret.vault_server_cert](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
-| [kubernetes_service_account.vault-sa](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_account) | resource |
-| [time_sleep.vault_release](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
-| [tls_cert_request.cert_request](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/cert_request) | resource |
-| [tls_private_key.pkey](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
-| [aws_eks_cluster.eks_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster) | data source |
-| [aws_eks_cluster_auth.eks_cluster_auth](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster_auth) | data source |
-| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
-| [aws_secretsmanager_secret_version.vault_root_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
+| [aws_dynamodb_table.vault-backend](https://registry.terraform.io/providers/hashicorp/aws/5.40.0/docs/resources/dynamodb_table) | resource |
+| [aws_iam_policy.vault_kms_policy](https://registry.terraform.io/providers/hashicorp/aws/5.40.0/docs/resources/iam_policy) | resource |
+| [aws_kms_key.vault_unseal_key](https://registry.terraform.io/providers/hashicorp/aws/5.40.0/docs/resources/kms_key) | resource |
+| [aws_secretsmanager_secret.vault_root_token](https://registry.terraform.io/providers/hashicorp/aws/5.40.0/docs/resources/secretsmanager_secret) | resource |
+| [helm_release.vault](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs/resources/release) | resource |
+| [kubernetes_certificate_signing_request_v1.vault_server_cert_req](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs/resources/certificate_signing_request_v1) | resource |
+| [kubernetes_job.vault_init_job](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs/resources/job) | resource |
+| [kubernetes_secret.sa-token](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs/resources/secret) | resource |
+| [kubernetes_secret.vault_server_cert](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs/resources/secret) | resource |
+| [kubernetes_service_account.vault-sa](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs/resources/service_account) | resource |
+| [time_sleep.vault_release](https://registry.terraform.io/providers/hashicorp/time/0.9.1/docs/resources/sleep) | resource |
+| [tls_cert_request.cert_request](https://registry.terraform.io/providers/hashicorp/tls/4.0.4/docs/resources/cert_request) | resource |
+| [tls_private_key.pkey](https://registry.terraform.io/providers/hashicorp/tls/4.0.4/docs/resources/private_key) | resource |
+| [aws_eks_cluster.eks_cluster](https://registry.terraform.io/providers/hashicorp/aws/5.40.0/docs/data-sources/eks_cluster) | data source |
+| [aws_eks_cluster_auth.eks_cluster_auth](https://registry.terraform.io/providers/hashicorp/aws/5.40.0/docs/data-sources/eks_cluster_auth) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/5.40.0/docs/data-sources/region) | data source |
+| [aws_secretsmanager_secret_version.vault_root_token](https://registry.terraform.io/providers/hashicorp/aws/5.40.0/docs/data-sources/secretsmanager_secret_version) | data source |
 
 ## Inputs
 
