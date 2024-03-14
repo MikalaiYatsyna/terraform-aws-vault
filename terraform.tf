@@ -1,4 +1,5 @@
 terraform {
+  required_version = "1.7.5"
   required_providers {
     aws = {
       version = "5.40.0"
@@ -13,7 +14,7 @@ terraform {
       source  = "hashicorp/helm"
     }
     tls = {
-      version = "4.0.5"
+      version = "4.0.4"
       source  = "hashicorp/tls"
     }
     time = {
