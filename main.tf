@@ -1,13 +1,12 @@
 locals {
   app_name     = "vault"
   ingress_host = "${local.app_name}.${var.domain}"
-  chart_repo   = "https://helm.releases.hashicorp.com"
-  chart_name   = "vault"
 }
 
 resource "helm_release" "vault" {
-  repository        = local.chart_repo
-  chart             = local.chart_name
+  repository        = "https://helm.releases.hashicorp.com"
+  chart             = "vault"
+  version           = "0.26.1"
   name              = local.app_name
   namespace         = var.namespace
   dependency_update = true
