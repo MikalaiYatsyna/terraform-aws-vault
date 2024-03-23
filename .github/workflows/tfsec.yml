@@ -1,0 +1,23 @@
+name: Terraform Security Scan
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+  validate:
+    name: Terraform Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Run TfSec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.3.1
+        with:
+          soft_fail: true
+          github_token: ${{ github.token }}

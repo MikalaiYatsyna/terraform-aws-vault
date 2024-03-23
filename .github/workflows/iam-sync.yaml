@@ -1,0 +1,34 @@
+name: IAM Sync
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  check-iam-file-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check if permission file modified
+        id: iam-policy-changed
+        uses: tj-actions/changed-files@v43
+        with:
+          files: iam/vault-policy.json
+          since_last_remote_commit: true
+
+      - name: Create PR if IAM file is modified
+        if: steps.iam-policy-changed.outputs.any_changed == 'true'
+        uses: paygoc6/action-pull-request-another-repo@v1.0.1
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source_folder: 'iam'
+          destination_repo: 'MikalaiYatsyna/terraform-aws-iam'
+          destination_base_branch: 'main'
+          destination_head_branch: 'iam-sync/${{ github.repository }}'
+          user_email: 'iam-sync-bot@logisticsonline.uk'
+          user_name: 'iam-sync-bot'
