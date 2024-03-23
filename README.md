@@ -2,6 +2,25 @@
 Terraform module to create Vault cluster on AWS EKS
 
 <!-- BEGIN_TF_DOCS -->
+
+
+## Prerequisites
+
+The following IAM policy needs to be attached to the role that is assumed during the creation of module resources:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [],
+      "Resource": "",
+      "Effect": "Allow"
+    }
+  ]
+}
+```
+
 ## Requirements
 
 | Name | Version |
@@ -12,7 +31,6 @@ Terraform module to create Vault cluster on AWS EKS
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | 2.27.0 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | 0.11.1 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.0.5 |
-
 ## Providers
 
 | Name | Version |
@@ -22,13 +40,11 @@ Terraform module to create Vault cluster on AWS EKS
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.27.0 |
 | <a name="provider_time"></a> [time](#provider\_time) | 0.11.1 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.5 |
-
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_vault_role"></a> [vault\_role](#module\_vault\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | n/a |
-
 ## Resources
 
 | Name | Type |
@@ -50,20 +66,21 @@ Terraform module to create Vault cluster on AWS EKS
 | [aws_eks_cluster_auth.eks_cluster_auth](https://registry.terraform.io/providers/hashicorp/aws/5.42.0/docs/data-sources/eks_cluster_auth) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/5.42.0/docs/data-sources/region) | data source |
 | [aws_secretsmanager_secret_version.vault_root_token](https://registry.terraform.io/providers/hashicorp/aws/5.42.0/docs/data-sources/secretsmanager_secret_version) | data source |
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_certificate_issuer"></a> [certificate\_issuer](#input\_certificate\_issuer) | Cert manager issuer name for Ingress certificate | `string` | n/a | yes |
-| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of EKS cluster | `string` | n/a | yes |
+| <a name="input_cluster_ca"></a> [cluster\_ca](#input\_cluster\_ca) | CA certificate of the cluster. | `string` | n/a | yes |
+| <a name="input_cluster_endpoint"></a> [cluster\_endpoint](#input\_cluster\_endpoint) | Endpoint of the cluster. | `string` | n/a | yes |
 | <a name="input_domain"></a> [domain](#input\_domain) | Root application domain name | `string` | n/a | yes |
+| <a name="input_k8s_exec_args"></a> [k8s\_exec\_args](#input\_k8s\_exec\_args) | Args for Kubernetes provider exec plugin. Example command ['eks', 'get-token', '--cluster-name', '{clusterName}}'] | `list(string)` | n/a | yes |
+| <a name="input_k8s_exec_command"></a> [k8s\_exec\_command](#input\_k8s\_exec\_command) | Command name for Kubernetes provider exec plugin. Example - 'aws | `string` | n/a | yes |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace for Vault release | `string` | n/a | yes |
 | <a name="input_oidc_provider_arn"></a> [oidc\_provider\_arn](#input\_oidc\_provider\_arn) | OIDC provider arn | `string` | n/a | yes |
 | <a name="input_server_replicas"></a> [server\_replicas](#input\_server\_replicas) | Number of replicas to create | `number` | `2` | no |
 | <a name="input_stack"></a> [stack](#input\_stack) | Stack name | `string` | n/a | yes |
 | <a name="input_vault_init_image"></a> [vault\_init\_image](#input\_vault\_init\_image) | Image to be used in init job | `string` | n/a | yes |
-
 ## Outputs
 
 | Name | Description |
