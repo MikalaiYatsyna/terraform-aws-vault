@@ -10,7 +10,7 @@ terraform {
       source  = "hashicorp/kubernetes"
     }
     helm = {
-      version = "2.12.1"
+      version = "2.17.0"
       source  = "hashicorp/helm"
     }
     tls = {
