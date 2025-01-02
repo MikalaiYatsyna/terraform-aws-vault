@@ -11,7 +11,7 @@ Terraform module to create Vault cluster on AWS EKS
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | 2.12.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | 2.27.0 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | 0.11.1 |
-| <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.0.5 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.0.6 |
 
 ## Providers
 
@@ -21,7 +21,7 @@ Terraform module to create Vault cluster on AWS EKS
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.12.1 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.27.0 |
 | <a name="provider_time"></a> [time](#provider\_time) | 0.11.1 |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.5 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.6 |
 
 ## Modules
 
@@ -44,8 +44,8 @@ Terraform module to create Vault cluster on AWS EKS
 | [kubernetes_secret.vault_server_cert](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs/resources/secret) | resource |
 | [kubernetes_service_account.vault-sa](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs/resources/service_account) | resource |
 | [time_sleep.vault_release](https://registry.terraform.io/providers/hashicorp/time/0.11.1/docs/resources/sleep) | resource |
-| [tls_cert_request.cert_request](https://registry.terraform.io/providers/hashicorp/tls/4.0.5/docs/resources/cert_request) | resource |
-| [tls_private_key.pkey](https://registry.terraform.io/providers/hashicorp/tls/4.0.5/docs/resources/private_key) | resource |
+| [tls_cert_request.cert_request](https://registry.terraform.io/providers/hashicorp/tls/4.0.6/docs/resources/cert_request) | resource |
+| [tls_private_key.pkey](https://registry.terraform.io/providers/hashicorp/tls/4.0.6/docs/resources/private_key) | resource |
 | [aws_eks_cluster.eks_cluster](https://registry.terraform.io/providers/hashicorp/aws/5.42.0/docs/data-sources/eks_cluster) | data source |
 | [aws_eks_cluster_auth.eks_cluster_auth](https://registry.terraform.io/providers/hashicorp/aws/5.42.0/docs/data-sources/eks_cluster_auth) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/5.42.0/docs/data-sources/region) | data source |
