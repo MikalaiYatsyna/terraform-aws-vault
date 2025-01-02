@@ -9,7 +9,7 @@ Terraform module to create Vault cluster on AWS EKS
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | 1.10.3 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | 5.42.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | 2.12.1 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | 2.27.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | 2.35.1 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | 0.12.1 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.0.6 |
 
@@ -19,7 +19,7 @@ Terraform module to create Vault cluster on AWS EKS
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 5.42.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.12.1 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.27.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.35.1 |
 | <a name="provider_time"></a> [time](#provider\_time) | 0.12.1 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.6 |
 
@@ -38,11 +38,11 @@ Terraform module to create Vault cluster on AWS EKS
 | [aws_kms_key.vault_unseal_key](https://registry.terraform.io/providers/hashicorp/aws/5.42.0/docs/resources/kms_key) | resource |
 | [aws_secretsmanager_secret.vault_root_token](https://registry.terraform.io/providers/hashicorp/aws/5.42.0/docs/resources/secretsmanager_secret) | resource |
 | [helm_release.vault](https://registry.terraform.io/providers/hashicorp/helm/2.12.1/docs/resources/release) | resource |
-| [kubernetes_certificate_signing_request_v1.vault_server_cert_req](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs/resources/certificate_signing_request_v1) | resource |
-| [kubernetes_job.vault_init_job](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs/resources/job) | resource |
-| [kubernetes_secret.sa-token](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs/resources/secret) | resource |
-| [kubernetes_secret.vault_server_cert](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs/resources/secret) | resource |
-| [kubernetes_service_account.vault-sa](https://registry.terraform.io/providers/hashicorp/kubernetes/2.27.0/docs/resources/service_account) | resource |
+| [kubernetes_certificate_signing_request_v1.vault_server_cert_req](https://registry.terraform.io/providers/hashicorp/kubernetes/2.35.1/docs/resources/certificate_signing_request_v1) | resource |
+| [kubernetes_job.vault_init_job](https://registry.terraform.io/providers/hashicorp/kubernetes/2.35.1/docs/resources/job) | resource |
+| [kubernetes_secret.sa-token](https://registry.terraform.io/providers/hashicorp/kubernetes/2.35.1/docs/resources/secret) | resource |
+| [kubernetes_secret.vault_server_cert](https://registry.terraform.io/providers/hashicorp/kubernetes/2.35.1/docs/resources/secret) | resource |
+| [kubernetes_service_account.vault-sa](https://registry.terraform.io/providers/hashicorp/kubernetes/2.35.1/docs/resources/service_account) | resource |
 | [time_sleep.vault_release](https://registry.terraform.io/providers/hashicorp/time/0.12.1/docs/resources/sleep) | resource |
 | [tls_cert_request.cert_request](https://registry.terraform.io/providers/hashicorp/tls/4.0.6/docs/resources/cert_request) | resource |
 | [tls_private_key.pkey](https://registry.terraform.io/providers/hashicorp/tls/4.0.6/docs/resources/private_key) | resource |
